@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { formatINR } from '@/lib/format';
 import { LOAN_TYPES } from '@/lib/validation/loans';
 
@@ -60,7 +61,7 @@ export default function LoansPage() {
         <tbody>
           {loans.map((l) => (
             <tr key={l.id} className="border-b">
-              <td className="p-2">{l.lender}</td><td className="p-2">{label(l.loanType)}</td>
+              <td className="p-2"><Link href={`/loans/${l.id}`} className="underline">{l.lender}</Link></td><td className="p-2">{label(l.loanType)}</td>
               <td className="p-2 text-right tabular-nums">{formatINR(l.principal)}</td>
               <td className="p-2 text-right">{l.interestRate}% {l.interestType}</td>
               <td className="p-2 text-right tabular-nums">{formatINR(l.emiAmount)}</td>

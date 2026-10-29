@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"tests/unit/**/*.test.ts\"",
     "db:migrate": "tsx scripts/migrate.ts",
-    "test:db": "tsx --test --test-concurrency=1 \"tests/db/**/*.test.ts\""
+    "test:db": "tsx --test --test-concurrency=1 \"tests/db/**/*.test.ts\"",
+    "db:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",

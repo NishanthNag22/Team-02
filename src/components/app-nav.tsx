@@ -9,6 +9,14 @@ const LINKS = [
   { href: '/loans', label: 'Loans' },
   { href: '/dues', label: 'Dues' },
   { href: '/transactions', label: 'Ledger' },
+  { href: '/import', label: 'Import' },
+  { href: '/receipts', label: 'Receipts' },
+  { href: '/vault', label: 'Vault' },
+  { href: '/insights', label: 'Insights' },
+  { href: '/projection', label: 'Projection' },
+  { href: '/reports', label: 'Reports' },
+  { href: '/news', label: 'News' },
+  { href: '/advisor', label: 'Advisor' },
 ];
 
 export function AppNav({ name, role }: { name: string; role: string }) {
@@ -20,7 +28,7 @@ export function AppNav({ name, role }: { name: string; role: string }) {
   }
   return (
     <nav className="border-b border-stone-300 bg-white">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
         <Link href="/dashboard" className="font-bold text-amber-800">WealthWise</Link>
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="text-sm hover:underline">{l.label}</Link>

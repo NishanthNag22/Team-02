@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { NotificationBell } from './notification-bell';
 
 const LINKS = [
   { href: '/dashboard', label: 'Dashboard' },
@@ -33,7 +34,8 @@ export function AppNav({ name, role }: { name: string; role: string }) {
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="text-sm hover:underline">{l.label}</Link>
         ))}
-        <span className="ml-auto text-sm opacity-70">{name} · {role}</span>
+        <span className="ml-auto"><NotificationBell /></span>
+        <span className="text-sm opacity-70">{name} · {role}</span>
         <button onClick={logout} className="text-sm underline">Log out</button>
       </div>
     </nav>

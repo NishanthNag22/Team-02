@@ -1,19 +1,20 @@
 import type { NextRequest } from 'next/server';
 import { requireUser } from '@/lib/auth/session';
 import { assetSchema } from '@/lib/validation/assets';
-import { deleteAsset, getAsset, updateAsset } from '@/lib/db/assets';
+import { deleteAsset, getAsset, getValuationHistory, updateAsset } from '@/lib/db/assets';
 import { apiError, HttpError, ok, parseId } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 type Ctx = { params: { id: string } };
 
-/** GET /api/assets/{id} */
+/** GET /api/assets/{id} – asset with its valuation history (FR-06) */
 export async function GET(_req: NextRequest, { params }: Ctx) {
   try {
     const user = await requireUser();
-    const asset = await getAsset(user.id, parseId(params.id));
+    const id = parseId(params.id);
+    const asset = await getAsset(user.id, id);
     if (!asset) throw new HttpError(404, 'Asset not found');
-    return ok({ asset });
+    return ok({ asset, valuationHistory: await getValuationHistory(user.id, id) });
   } catch (err) {
     return apiError(err);
   }

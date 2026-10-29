@@ -24,7 +24,8 @@ export function maskPan(pan: string | null): string {
 }
 
 export const rs = (n: number) => `Rs. ${new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n)}`;
-const label = (s: string) => s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+const SHORT: Record<string, string> = { fd: 'FD', epf: 'EPF', ppf: 'PPF' };
+const label = (s: string) => SHORT[s] ?? s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
 export function buildStatement(d: StatementData, opts: { compress?: boolean } = {}): Promise<Buffer> {
   return new Promise((resolve, reject) => {

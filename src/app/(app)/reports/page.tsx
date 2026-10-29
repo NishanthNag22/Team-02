@@ -44,6 +44,7 @@ export default function ReportsPage() {
           </select>
         </label>
         <span className="text-xs opacity-60">{r.from} to {r.to}</span>
+        <a href="/api/reports/statement" className="ml-auto rounded bg-amber-700 px-3 py-1.5 text-sm text-white">Download PDF statement</a>
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">

@@ -19,6 +19,12 @@ export default function AssetsPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState<Record<string, string[]>>({});
+  const [history, setHistory] = useState<{ name: string; points: { valuationDate: string; value: number; source: string }[] } | null>(null);
+
+  async function showHistory(a: Asset) {
+    const res = await fetch(`/api/assets/${a.id}`);
+    if (res.ok) setHistory({ name: a.name, points: (await res.json()).valuationHistory });
+  }
 
   const load = useCallback(async () => {
     const res = await fetch('/api/assets');
@@ -103,13 +109,40 @@ export default function AssetsPage() {
               <td className="p-2 text-right tabular-nums">{formatINR(a.purchaseValue)}</td>
               <td className="p-2 text-right tabular-nums">{formatINR(a.currentValue)}</td>
               <td className="p-2">{a.valuationDate}</td>
-              <td className="p-2 text-right"><button onClick={() => edit(a)} className="underline">Edit</button>{' '}
+              <td className="p-2 text-right"><button onClick={() => showHistory(a)} className="underline">History</button>{' '}
+                <button onClick={() => edit(a)} className="underline">Edit</button>{' '}
                 <button onClick={() => remove(a.id)} className="text-red-700 underline">Delete</button></td>
             </tr>
           ))}
           {assets.length === 0 && <tr><td colSpan={7} className="p-4 text-center opacity-60">No assets yet – add one above.</td></tr>}
         </tbody>
       </table>
+
+      {history && (
+        <div className="mt-6 rounded border border-stone-300 bg-white p-4">
+          <div className="flex items-center">
+            <h2 className="font-semibold">Valuation history – {history.name}</h2>
+            <button onClick={() => setHistory(null)} className="ml-auto text-sm underline">Close</button>
+          </div>
+          <table className="mt-2 w-full text-sm">
+            <thead><tr className="border-b text-left"><th className="p-2">Date</th><th className="p-2 text-right">Value</th><th className="p-2">Change</th><th className="p-2">Source</th></tr></thead>
+            <tbody>
+              {history.points.map((p, i) => {
+                const prev = i > 0 ? history.points[i - 1].value : null;
+                const diff = prev === null ? null : p.value - prev;
+                return (
+                  <tr key={i} className="border-b">
+                    <td className="p-2">{p.valuationDate}</td>
+                    <td className="p-2 text-right tabular-nums">{formatINR(p.value)}</td>
+                    <td className={`p-2 ${diff !== null && diff < 0 ? 'text-red-700' : 'text-green-800'}`}>{diff === null ? '—' : `${diff >= 0 ? '+' : ''}${formatINR(diff)}`}</td>
+                    <td className="p-2">{p.source}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

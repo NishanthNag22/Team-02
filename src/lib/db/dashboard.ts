@@ -1,18 +1,18 @@
-﻿import { query } from './postgres';
+import { query } from './postgres';
+import { listLoans } from './loans';
 import { markOverdue, upcomingDues } from './dues';
 
 const n = (v: unknown) => Number(v ?? 0);
 
-/** Current totals. Liabilities = outstanding balance of active loans. */
+/** Current totals. Liabilities = outstanding balance of active loans (balance before the next unpaid EMI). */
 async function summary(userId: number) {
   const [row] = await query(
     `SELECT
        (SELECT COALESCE(SUM(current_value), 0) FROM assets WHERE user_id = $1) AS total_assets,
-       (SELECT COALESCE(SUM(o.outstanding), 0) FROM (
-          SELECT COALESCE(MIN(e.closing_balance) FILTER (WHERE e.status = 'paid'), l.principal) AS outstanding
-            FROM loans l LEFT JOIN emi_schedule e ON e.loan_id = l.id
-           WHERE l.user_id = $1 AND l.status = 'active'
-           GROUP BY l.id, l.principal) o) AS total_liabilities,
+       (SELECT COALESCE(SUM(
+          (SELECT e.closing_balance + e.principal_component FROM emi_schedule e
+            WHERE e.loan_id = l.id AND e.status <> 'paid' ORDER BY e.installment_no LIMIT 1)), 0)
+          FROM loans l WHERE l.user_id = $1 AND l.status = 'active') AS total_liabilities,
        (SELECT COALESCE(SUM(current_value), 0) FROM assets WHERE user_id = $1 AND liquidity = 'liquid') AS liquid_assets`,
     [userId],
   );
@@ -84,35 +84,12 @@ async function recurring(userId: number) {
   return rows.map((r) => ({ category: String(r.category), months: n(r.months), avgAmount: n(r.avg_amount) }));
 }
 
-/** Returns loans list with outstanding balance and paid EMI count for the dashboard. */
-async function loans(userId: number) {
-  const rows = await query(
-    `SELECT l.id, l.lender, l.principal, l.tenure_months, l.status,
-            COALESCE(MIN(e.closing_balance) FILTER (WHERE e.status = 'paid'), l.principal) AS outstanding,
-            COUNT(e.id) FILTER (WHERE e.status = 'paid') AS paid_count
-       FROM loans l LEFT JOIN emi_schedule e ON e.loan_id = l.id
-      WHERE l.user_id = $1
-      GROUP BY l.id, l.lender, l.principal, l.tenure_months, l.status
-      ORDER BY l.id`,
-    [userId],
-  );
-  return rows.map((r) => ({
-    id: Number(r.id),
-    lender: String(r.lender),
-    principal: n(r.principal),
-    outstanding: n(r.outstanding),
-    tenureMonths: Number(r.tenure_months),
-    paidCount: Number(r.paid_count),
-    status: String(r.status),
-  }));
-}
-
 /** Everything the dashboard needs in one call (FR-18). Independent reads run in parallel. */
 export async function getDashboard(userId: number) {
   await markOverdue(userId);
   const s = await summary(userId);
-  const [trendRows, mix, loanList, dues, flow, rec] = await Promise.all([
-    trend(userId, s), allocation(userId), loans(userId), upcomingDues(userId, 45, 10), cashflow(userId), recurring(userId),
+  const [trendRows, mix, loans, dues, flow, rec] = await Promise.all([
+    trend(userId, s), allocation(userId), listLoans(userId), upcomingDues(userId, 45, 10), cashflow(userId), recurring(userId),
   ]);
-  return { summary: s, trend: trendRows, allocation: mix, loans: loanList, dues, cashflow: flow, recurring: rec };
+  return { summary: s, trend: trendRows, allocation: mix, loans, dues, cashflow: flow, recurring: rec };
 }

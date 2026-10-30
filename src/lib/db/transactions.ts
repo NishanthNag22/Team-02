@@ -28,7 +28,11 @@ function toTxn(r: Record<string, unknown>): Transaction {
   };
 }
 
-/** Optional filters use ($n IS NULL OR col = $n) so the SQL is never built from strings (SR-06). */
+/**
+ * Optional filters use ($n IS NULL OR col = $n) so the SQL is never built from strings (SR-06).
+ * `search` uses PostgreSQL full-text search: matches word stems ("pharmacy" finds "Pharmacies")
+ * and quoted phrases, ranked by relevance (FR-13).
+ */
 export async function listTransactions(userId: number, f: TransactionFilter): Promise<Transaction[]> {
   const rows = await query(
     `SELECT ${COLUMNS} FROM transactions
@@ -37,9 +41,12 @@ export async function listTransactions(userId: number, f: TransactionFilter): Pr
         AND ($3::date IS NULL OR txn_date >= $3)
         AND ($4::date IS NULL OR txn_date <= $4)
         AND ($5::text IS NULL OR lower(category) = lower($5))
-      ORDER BY txn_date DESC, id DESC
+        AND ($7::text IS NULL OR search_vector @@ websearch_to_tsquery('english', $7))
+      ORDER BY CASE WHEN $7::text IS NULL THEN 0
+                    ELSE ts_rank(search_vector, websearch_to_tsquery('english', $7)) END DESC,
+               txn_date DESC, id DESC
       LIMIT $6`,
-    [userId, f.type ?? null, f.from ?? null, f.to ?? null, f.category ?? null, f.limit],
+    [userId, f.type ?? null, f.from ?? null, f.to ?? null, f.category ?? null, f.limit, f.search ?? null],
   );
   return rows.map(toTxn);
 }

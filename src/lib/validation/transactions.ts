@@ -18,6 +18,7 @@ export const transactionFilterSchema = z.object({
   from: isoDate.optional(),
   to: isoDate.optional(),
   category: z.string().trim().min(1).max(80).optional(),
+  search: z.string().trim().min(1).max(200).optional(),
   limit: z.coerce.number().int().min(1).max(500).default(200),
 });
 

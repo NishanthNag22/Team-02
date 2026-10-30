@@ -6,7 +6,7 @@ import { apiError, ok } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
-/** GET /api/transactions?type=&from=&to=&category=&limit= (FR-12) */
+/** GET /api/transactions?type=&from=&to=&category=&search=&limit= (FR-12, FR-13) */
 export async function GET(req: NextRequest) {
   try {
     const user = await requireUser();

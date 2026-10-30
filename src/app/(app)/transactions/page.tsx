@@ -12,7 +12,8 @@ const EMPTY = { txnType: 'expense', amount: '', txnDate: today(), category: '', 
 export default function TransactionsPage() {
   const [txns, setTxns] = useState<Txn[]>([]);
   const [form, setForm] = useState<Record<string, string>>(EMPTY);
-  const [filter, setFilter] = useState({ type: '', from: '', to: '', category: '' });
+  const [filter, setFilter] = useState({ type: '', from: '', to: '', category: '', search: '' });
+  const [searchText, setSearchText] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState<Record<string, string[]>>({});
 
@@ -69,7 +70,23 @@ export default function TransactionsPage() {
         </div>
       </form>
 
-      <div className="mt-6 flex flex-wrap items-end gap-3 text-sm">
+      <form
+        onSubmit={(e) => { e.preventDefault(); setFilter({ ...filter, search: searchText.trim() }); }}
+        className="mt-6 flex gap-2 text-sm"
+      >
+        <input
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          placeholder='Search descriptions – e.g. pharmacy, "indian oil", rent -deposit'
+          className="flex-1 rounded border border-stone-300 bg-white px-3 py-2"
+        />
+        <button className="rounded bg-stone-700 px-4 py-2 text-white">Search</button>
+        {filter.search && (
+          <button type="button" onClick={() => { setSearchText(''); setFilter({ ...filter, search: '' }); }} className="underline">Clear</button>
+        )}
+      </form>
+
+      <div className="mt-3 flex flex-wrap items-end gap-3 text-sm">
         <label>Type<select value={filter.type} onChange={setF('type')} className={input}><option value="">All</option>{TXN_TYPES.map((t) => <option key={t}>{t}</option>)}</select></label>
         <label>From<input type="date" value={filter.from} onChange={setF('from')} className={input} /></label>
         <label>To<input type="date" value={filter.to} onChange={setF('to')} className={input} /></label>

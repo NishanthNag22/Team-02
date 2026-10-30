@@ -2,7 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #f7f4ee;
-  color: #3a3733;
+/* Light theme (default) */
+:root {
+  --bg: #f7f4ee;
+  --fg: #3a3733;
+  --card: #ffffff;
+  --line: #d6d3d1;
+  --muted: #e7e5e4;
+  color-scheme: light;
 }
+
+/* Dark theme (NFR-05). The class is set before first paint by the script in app/layout.tsx. */
+html.dark {
+  --bg: #1b1916;
+  --fg: #e8e3da;
+  --card: #26231f;
+  --line: #4a453e;
+  --muted: #3a3631;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Pages use bg-white / border-stone-* classes; map them to the theme so every page follows it. */
+html.dark .bg-white { background-color: var(--card); }
+html.dark .border-stone-300, html.dark .border, html.dark .border-t, html.dark .border-b { border-color: var(--line); }
+html.dark .bg-stone-200 { background-color: var(--muted); }
+html.dark .text-amber-800 { color: #f0b46a; }
+html.dark .text-green-700, html.dark .text-green-800 { color: #8fd18b; }
+html.dark .text-red-700, html.dark .text-red-800 { color: #f39a8f; }
+html.dark input, html.dark select, html.dark textarea { background-color: var(--card); color: var(--fg); }
+html.dark .bg-amber-50, html.dark .bg-red-50 { background-color: #3a2f1f; }
+html.dark .text-amber-900, html.dark .text-red-800 { color: #f3d9a6; }
+html.dark .border-amber-300, html.dark .border-red-300 { border-color: #6b5530; }
+html.dark .bg-stone-50 { background-color: var(--card); }

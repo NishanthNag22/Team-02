@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { formatINR } from '@/lib/format';
+import { PrepayPanel } from './prepay-panel';
 
 interface Loan {
   id: number; loanType: string; lender: string; principal: number; interestRate: number; interestType: string;
@@ -83,6 +84,8 @@ export default function LoanDetailPage({ params }: { params: { id: string } }) {
         <button onClick={remove} className="text-red-700 underline">Delete loan</button>
         {message && <span>{message}</span>}
       </div>
+
+      {loan.status === 'active' && nextUnpaid && <PrepayPanel loanId={loan.id} onApplied={load} />}
 
       <table className="mt-6 w-full border-collapse bg-white text-sm">
         <thead><tr className="border-b text-left"><th className="p-2">#</th><th className="p-2">Due date</th><th className="p-2 text-right">EMI</th><th className="p-2 text-right">Principal</th><th className="p-2 text-right">Interest</th><th className="p-2 text-right">Balance</th><th className="p-2">Status</th></tr></thead>

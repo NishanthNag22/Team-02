@@ -23,9 +23,13 @@ export interface LoanSummary {
 const SUMMARY_SQL = `
   SELECT l.id, l.loan_type, l.lender, l.principal, l.interest_rate, l.interest_type, l.tenure_months,
          to_char(l.start_date, 'YYYY-MM-DD') AS start_date, l.status,
-         MAX(e.emi_amount) FILTER (WHERE e.installment_no = 1)                       AS emi_amount,
+         COALESCE((SELECT n.emi_amount FROM emi_schedule n
+                    WHERE n.loan_id = l.id AND n.status <> 'paid' ORDER BY n.installment_no LIMIT 1),
+                  MAX(e.emi_amount) FILTER (WHERE e.installment_no = 1))              AS emi_amount,
          COUNT(e.id)       FILTER (WHERE e.status = 'paid')                          AS paid_count,
-         COALESCE(MIN(e.closing_balance) FILTER (WHERE e.status = 'paid'), l.principal) AS outstanding,
+         -- Outstanding = balance before the next unpaid EMI. Still correct after a prepayment (FR-11).
+         COALESCE((SELECT n.closing_balance + n.principal_component FROM emi_schedule n
+                    WHERE n.loan_id = l.id AND n.status <> 'paid' ORDER BY n.installment_no LIMIT 1), 0) AS outstanding,
          to_char(MIN(e.due_date) FILTER (WHERE e.status <> 'paid'), 'YYYY-MM-DD')    AS next_due_date
     FROM loans l
     LEFT JOIN emi_schedule e ON e.loan_id = l.id
@@ -140,6 +144,10 @@ export async function updateLoan(userId: number, loanId: number, input: LoanInpu
     const paid = await client.query("SELECT 1 FROM emi_schedule WHERE loan_id = $1 AND status = 'paid' LIMIT 1", [loanId]);
     if (paid.rows.length > 0) {
       throw new HttpError(409, 'This loan already has paid installments, so its terms cannot be changed.');
+    }
+    const prepaid = await client.query('SELECT 1 FROM loan_prepayments WHERE loan_id = $1 LIMIT 1', [loanId]);
+    if (prepaid.rows.length > 0) {
+      throw new HttpError(409, 'This loan has a prepayment, so its terms cannot be changed.');
     }
     await client.query(
       `UPDATE loans SET loan_type = $2, lender = $3, principal = $4, interest_rate = $5, interest_type = $6,

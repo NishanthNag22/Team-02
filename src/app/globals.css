@@ -35,3 +35,7 @@ html.dark .text-amber-800 { color: #f0b46a; }
 html.dark .text-green-700, html.dark .text-green-800 { color: #8fd18b; }
 html.dark .text-red-700, html.dark .text-red-800 { color: #f39a8f; }
 html.dark input, html.dark select, html.dark textarea { background-color: var(--card); color: var(--fg); }
+html.dark .bg-amber-50, html.dark .bg-red-50 { background-color: #3a2f1f; }
+html.dark .text-amber-900, html.dark .text-red-800 { color: #f3d9a6; }
+html.dark .border-amber-300, html.dark .border-red-300 { border-color: #6b5530; }
+html.dark .bg-stone-50 { background-color: var(--card); }

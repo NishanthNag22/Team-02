@@ -257,7 +257,7 @@ npm run test:db   # database tests
 - Unit tests: EMI, prepayment, projection, score, loan comparison, CSV parsing, receipt fields, news parsing, FY dates, PDF masking, security and architecture rules.
 - Database tests: search, rules, imports (duplicates and rollback), prepayment, vault, receipts (OCR on a sample image), news impact, reports, notifications, advisor scoping, NFR-01 timing and NFR-03 fault injection.
 - CI (GitHub Actions) runs type-check, both test suites, migrations and a production build on every push.
-- The full test strategy and 59 planned test cases are in the **Software Test Plan (STP)**.
+- The full test strategy, all 59 test cases and their results (all passed, 31-10-2026) are in the **Software Test Plan (STP)**.
 
 ---
 
@@ -265,9 +265,9 @@ npm run test:db   # database tests
 
 | Document | Contents |
 |---|---|
-| `WealthWise_SRS_v1.0.docx` | Requirements: 26 FRs, 7 NFRs, security objectives and requirements, use cases, RTM |
-| `WealthWise_SAD_v1.0.docx` | Architecture, components, data stores, sequence diagrams, API design, security architecture |
-| `WealthWise_STP_v1.0.docx` | Test strategy, 59 test cases, security testing, cross-document traceability |
+| `WealthWise_SRS_v1.1.docx` | Requirements: 26 FRs, 7 NFRs, security objectives and requirements, use cases, RTM |
+| `WealthWise_SAD_v1.1.docx` | Architecture, components, data stores, sequence diagrams, API design, security architecture |
+| `WealthWise_STP_v1.1.docx` | Test strategy, 59 test cases, security testing, cross-document traceability |
 
 ---
 

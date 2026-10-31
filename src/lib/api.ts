@@ -28,6 +28,10 @@ export function apiError(err: unknown): NextResponse {
   if (pg?.code === '23505') return NextResponse.json({ error: 'That record already exists.' }, { status: 409 });
   if (pg?.code === '23514') return NextResponse.json({ error: 'A value was rejected by the database.' }, { status: 422 });
   if (pg?.code === '23503') return NextResponse.json({ error: 'Referenced record does not exist.' }, { status: 422 });
+  // Invalid values only the database can catch, e.g. the impossible date 2026-02-30 (SR-06)
+  if (pg?.code && ['22007', '22008', '22003', '22P02'].includes(pg.code)) {
+    return NextResponse.json({ error: 'A value is not valid (for example an impossible date or a number out of range).' }, { status: 422 });
+  }
 
   console.error('[api] unhandled error:', err);
   return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

@@ -65,6 +65,14 @@ test('SR-08: database constraint errors map to safe messages', async () => {
   assert.ok(!JSON.stringify(await res.json()).includes('users_email_key'));
 });
 
+test('SR-06: values rejected by the database (impossible date, out-of-range number) map to 422', async () => {
+  for (const code of ['22007', '22008', '22003', '22P02']) {
+    const res = apiError(Object.assign(new Error('date/time field value out of range: "2026-02-30"'), { code }));
+    assert.equal(res.status, 422);
+    assert.ok(!JSON.stringify(await res.json()).includes('2026-02-30'));
+  }
+});
+
 test('SR-09: PAN is masked on statements', () => {
   assert.equal(maskPan('ABCDE1234F'), 'XXXXXX234F');
 });

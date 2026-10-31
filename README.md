@@ -55,11 +55,11 @@ WealthWise records your assets, loans and day-to-day transactions, then answers 
 | Backend | Next.js route handlers (Node.js 20+), TypeScript |
 | Validation | Zod |
 | Auth | bcrypt (12 rounds), JWT (HS256) in an httpOnly cookie |
-| Relational DB | PostgreSQL 14+ (16 recommended) – system of record |
-| Document DB | MongoDB 6+ (optional) – raw imports, documents, valuation history, news cache |
+| Database | PostgreSQL 14+ (16 recommended) – all data, including vault metadata and the news cache |
+| File storage | Private `uploads/` folder for vault files (never served directly) |
 | OCR | tesseract.js (runs on the server) |
 | PDF | pdfkit |
-| Testing | Node.js test runner via `tsx` |
+| Testing | Node.js test runner via `tsx` (unit + database tests), GitHub Actions CI |
 
 ---
 
@@ -75,12 +75,12 @@ API layer – auth check · input validation · error mapping
       ▼
 Service layer – business logic (auth, import, OCR, vault, news, PDF)
       ▼
-Data-access layer – parameterised SQL / MongoDB driver
+Data-access layer – parameterised SQL (src/lib/db)
       ▼
-PostgreSQL (core data, functions, triggers, views)  +  MongoDB (optional)
+PostgreSQL
 ```
 
-Financial calculations (EMI, schedules, net worth, prepayment, credit score) run inside PostgreSQL as functions, a procedure and triggers. This means every screen and report shows the same figure.
+Financial calculations (EMI schedules, prepayment, projection, credit score) are pure TypeScript functions in `src/lib/services`, unit-tested without a database. Multi-step changes (loan + schedule, EMI payment, import commit, prepayment) run in one database transaction. Where this differs from the SAD, see `DEVIATIONS.md`.
 
 Full details: **Software Architecture and Design Specification (SAD)**.
 
@@ -92,7 +92,6 @@ Full details: **Software Architecture and Design Specification (SAD)**.
 
 - Node.js 20 or later
 - PostgreSQL 14 or later
-- MongoDB 6 or later *(optional – vault, valuation history and news cache need it; everything else works without it)*
 
 ### 1. Install
 
@@ -105,8 +104,7 @@ cp .env.example .env
 
 ```ini
 DATABASE_URL=postgresql://user:password@127.0.0.1:5432/wealthwise
-MONGODB_URI=mongodb://127.0.0.1:27017     # optional
-MONGODB_DB=wealthwise
+UPLOAD_DIR=./uploads                       # optional – where vault files are kept
 JWT_SECRET=<at least 32 random characters> # e.g. openssl rand -base64 48
 JWT_EXPIRES_IN=7d
 ```
@@ -118,15 +116,7 @@ Never commit `.env`. All secrets come from environment variables.
 ```bash
 createdb wealthwise
 npm run db:migrate     # apply all migrations
-npm run db:seed        # load demo data
-```
-
-`npm run db:reset` drops everything, re-migrates and re-seeds in one step.
-
-MongoDB via Docker (optional):
-
-```bash
-docker run -d -p 27017:27017 --name wealthwise-mongo mongo:7
+npm run db:seed        # load demo data (re-run any time to reset the demo accounts)
 ```
 
 ### 4. Run
@@ -155,10 +145,9 @@ npm run build && npm start
 | `npm run build` / `npm start` | Production build and start |
 | `npm run typecheck` | TypeScript check |
 | `npm run db:migrate` | Apply database migrations |
-| `npm run db:seed` | Load demo data |
-| `npm run db:reset` | Reset, migrate and seed |
-| `npm test` | Unit + database tests (uses a separate `wealthwise_test` database) |
-| `npm run docs:generate` | Regenerate schema diagrams and the data dictionary |
+| `npm run db:seed` | Load (or reset) the demo accounts |
+| `npm test` | Unit tests – no database needed |
+| `npm run test:db` | Database tests – need `DATABASE_URL`; each test creates and deletes its own users |
 
 ---
 
@@ -177,12 +166,14 @@ src/
   lib/
     auth/             JWT, password hashing, session, cookie
     db/               data-access modules (one per entity)
-    services/         import, CSV parser, OCR, vault, news, PDF, valuation
+    services/         pure logic: EMI, prepayment, projection, score, CSV, OCR, news, PDF, files
     validation/       Zod schemas
 db/migrations/        ordered SQL migrations
-scripts/              migrate, seed, test-db, generate-docs
-tests/                unit and database tests
-docs/                 data dictionary, diagrams
+deviations/           one note per change from the SRS/SAD
+scripts/              migrate, seed
+tests/unit/           pure-function, security and architecture tests
+tests/db/             database tests (incl. NFR-01 timing and NFR-03 fault injection)
+docs/                 usability checklist
 ```
 
 ---
@@ -197,18 +188,18 @@ All endpoints are under `/api`. All except sign-up, login, logout and `/api/auth
 | Assets | `GET/POST /assets`, `GET/PUT/DELETE /assets/{id}` |
 | Loans | `GET/POST /loans`, `GET/PUT/PATCH/DELETE /loans/{id}`, `GET /loans/{id}/schedule` |
 | EMI & dues | `POST /emi/{id}/pay`, `GET /dues` |
-| Prepayment | `POST /loans/{id}/prepay/simulate`, `POST /loans/{id}/prepay` |
+| Prepayment | `POST /loans/{id}/prepay/simulate`, `GET/POST /loans/{id}/prepay` |
 | Ledger | `GET/POST /transactions`, `DELETE /transactions/{id}` |
 | Import | `POST /imports/preview`, `POST /imports/commit`, `GET /imports/batches` |
 | Rules | `GET/POST /rules`, `DELETE /rules/{id}` |
 | Receipts | `POST /receipts/scan`, `POST /receipts/confirm` |
-| Vault | `GET/POST /vault`, `DELETE /vault/{id}` |
+| Vault | `GET/POST /vault`, `DELETE /vault/{id}`, `GET /vault/{id}/file` |
 | Dashboard | `GET /dashboard` |
 | Insights | `GET /insights/score`, `POST /insights/recommend`, `GET /insights/projection` |
 | Reports | `GET /reports/fy`, `GET /reports/statement` |
 | Notifications | `GET/POST /notifications` |
 | News | `GET /news`, `GET /news/{id}/impact`, `POST /news/refresh` *(advisor)* |
-| Advisor | `GET /advisor/clients` *(advisor)* |
+| Advisor | `GET/PUT/DELETE /advisor/me`, `GET /advisor/clients`, `GET /advisor/clients/{id}` *(advisor)* |
 
 **Common error codes:**
 
@@ -221,7 +212,7 @@ All endpoints are under `/api`. All except sign-up, login, logout and `/api/auth
 | 413 | File too large |
 | 415 | Wrong file type |
 | 422 | Validation failed |
-| 503 | MongoDB or news feed unavailable |
+| 503 | Vault storage or news feed unavailable |
 
 Request and response details are in the SAD, §4.3.
 
@@ -238,9 +229,11 @@ Request and response details are in the SAD, §4.3.
 - Uploads have type and size limits: CSV ≤ 5 MB, receipts ≤ 8 MB, vault ≤ 10 MB.
 - The PAN is masked on the PDF statement.
 
+- Vault files are checked by their content (not their name) and downloaded only through an authenticated route.
+- Automated security and layering tests run on every push (`tests/unit/security.test.ts`, `tests/unit/architecture.test.ts`).
+
 **Known open items:**
 - Login rate limiting.
-- Authenticated download for vault files.
 - Restricting Advisor self-registration.
 
 See SAD §3.7 and §4.6.
@@ -250,10 +243,13 @@ See SAD §3.7 and §4.6.
 ## Testing
 
 ```bash
-npm test
+npm test          # unit tests
+npm run test:db   # database tests
 ```
 
-- Runs unit tests (CSV parsing, receipt extraction, news parsing) and database tests (EMI maths, atomic payments, imports, triggers, score, prepayment, reports) against a separate test database.
+- Unit tests: EMI, prepayment, projection, score, loan comparison, CSV parsing, receipt fields, news parsing, FY dates, PDF masking, security and architecture rules.
+- Database tests: search, rules, imports (duplicates and rollback), prepayment, vault, receipts (OCR on a sample image), news impact, reports, notifications, advisor scoping, NFR-01 timing and NFR-03 fault injection.
+- CI (GitHub Actions) runs type-check, both test suites, migrations and a production build on every push.
 - The full test strategy and 59 planned test cases are in the **Software Test Plan (STP)**.
 
 ---
@@ -283,8 +279,6 @@ npm test
 ## Roadmap
 
 - Login rate limiting and Advisor registration controls
-- Authenticated vault file downloads
-- Advisor–client assignment from the UI
 - Email/SMS reminders
 - Account Aggregator integration
 - Deployment with HTTPS (hosting to be confirmed)

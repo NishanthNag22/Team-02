@@ -14,6 +14,13 @@ WealthWise records your assets, loans and day-to-day transactions, then answers 
 
 ---
 
+## Demo video
+
+
+https://github.com/user-attachments/assets/088e2c7a-cc38-4275-b33d-a12bfd3648c2
+
+
+
 ## Team
 
 | Member | Role |

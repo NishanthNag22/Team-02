@@ -1,3 +1,4 @@
+import { RecommendPanel } from './recommend-panel';
 import { ScoreCard } from './score-card';
 
 export default function InsightsPage() {
@@ -5,6 +6,7 @@ export default function InsightsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Insights</h1>
       <ScoreCard />
+      <RecommendPanel />
     </div>
   );
 }

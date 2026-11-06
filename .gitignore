@@ -12,3 +12,5 @@ npm-debug.log*
 
 # vault and receipt files (never commit user documents)
 uploads/
+# coverage output (reports are kept in docs/test-reports)
+coverage/

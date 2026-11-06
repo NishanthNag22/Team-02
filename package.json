@@ -10,7 +10,9 @@
     "test": "tsx --test \"tests/unit/**/*.test.ts\"",
     "db:migrate": "tsx scripts/migrate.ts",
     "test:db": "tsx --test --test-concurrency=1 \"tests/db/**/*.test.ts\"",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "test:all": "npm test && npm run test:db",
+    "test:coverage": "c8 --all --include \"src/lib/**\" --exclude \"**/*.d.ts\" --reporter=text-summary --reporter=html npm run test:all"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",
@@ -32,6 +34,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",
+    "c8": "^10.1.3",
     "dotenv": "^16.4.5",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",

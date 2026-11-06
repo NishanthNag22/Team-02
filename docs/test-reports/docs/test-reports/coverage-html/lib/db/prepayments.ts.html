@@ -1,0 +1,475 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for lib/db/prepayments.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">lib/db</a> prepayments.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">91.53% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>119/130</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">88.37% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>38/43</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">84.61% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>11/13</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">91.53% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>119/130</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import type { PoolClient } from 'pg';</span></span>
+import { getPool, query, withTransaction } from './postgres';
+import { HttpError } from '@/lib/api';
+import { planPrepayment, type PrepaymentMode, type RemainingInstallment } from '@/lib/services/prepayment';
+import type { PrepayInput } from '@/lib/validation/prepayment';
+&nbsp;
+type Runner = Pick&lt;PoolClient, 'query'&gt;;
+&nbsp;
+interface LoanState {
+  lender: string;
+  rate: number;
+  outstanding: number;
+  firstUnpaidNo: number;
+  remaining: RemainingInstallment[];
+}
+&nbsp;
+/** Loads my active loan and its unpaid installments. `lock` = FOR UPDATE inside a transaction. */
+async function loadLoan(db: Runner, userId: number, loanId: number, lock: boolean): Promise&lt;LoanState&gt; {
+  const loan = await db.query(
+    `SELECT lender, interest_rate, status FROM loans WHERE id = $1 AND user_id = $2 ${lock ? 'FOR UPDATE' : ''}`,
+    [loanId, userId],
+  );
+  if (loan.rows.length === 0) throw new HttpError(404, 'Loan not found');
+  if (loan.rows[0].status !== 'active') <span class="branch-0 cbranch-no" title="branch not covered" >throw new HttpError(422, 'Only an active loan can be prepaid.');</span>
+&nbsp;
+  const rows = await db.query(
+    `SELECT installment_no, to_char(due_date, 'YYYY-MM-DD') AS due_date, emi_amount, interest_component,
+            principal_component, closing_balance
+       FROM emi_schedule WHERE loan_id = $1 AND status &lt;&gt; 'paid' ORDER BY installment_no`,
+    [loanId],
+  );
+  if (rows.rows.length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >throw new HttpError(422, 'This loan has no unpaid installments.');</span>
+  const first = rows.rows[0];
+  return {
+    lender: String(loan.rows[0].lender),
+    rate: Number(loan.rows[0].interest_rate),
+    outstanding: Math.round((Number(first.closing_balance) + Number(first.principal_component)) * 100) / 100,
+    firstUnpaidNo: Number(first.installment_no),
+    remaining: rows.rows.map((r) =&gt; ({ dueDate: String(r.due_date), emiAmount: Number(r.emi_amount), interestComponent: Number(r.interest_component) })),
+  };
+}
+&nbsp;
+function plan(s: LoanState, amount: number, mode: PrepaymentMode) {
+  try {
+    return planPrepayment(s.outstanding, s.rate, s.remaining, amount, mode);
+  } catch (e) {
+    throw new HttpError(422, (e as Error).message);
+  }
+}
+&nbsp;
+/** Compares both options without saving anything (FR-11). */
+export async function simulatePrepayment(userId: number, loanId: number, amount: number) {
+  const s = await loadLoan(getPool(), userId, loanId, false);
+  const summary = (m: PrepaymentMode) =&gt; {
+    const { schedule, ...rest } = plan(s, amount, m);
+    return { ...rest, lastDueDate: schedule[schedule.length - 1].dueDate };
+  };
+  return { loanId, outstanding: s.outstanding, reduceTenure: summary('reduce_tenure'), reduceEmi: summary('reduce_emi') };
+}
+&nbsp;
+/**
+ * Applies a prepayment in ONE transaction (NFR-03): optional asset deduction, new schedule for the
+ * unpaid installments, a ledger entry and the prepayment record. Any failure rolls everything back.
+ */
+export async function applyPrepayment(userId: number, loanId: number, input: PrepayInput) {
+  return withTransaction(async (client) =&gt; {
+    const s = await loadLoan(client, userId, loanId, true);
+    const p = plan(s, input.amount, input.mode);
+&nbsp;
+    if (input.fundingAssetId) {
+      const a = await client.query('SELECT current_value FROM assets WHERE id = $1 AND user_id = $2 FOR UPDATE', [input.fundingAssetId, userId]);
+      if (a.rows.length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >throw new HttpError(422, 'Funding asset not found.');</span>
+      if (Number(a.rows[0].current_value) &lt; input.amount) throw new HttpError(422, 'The funding asset is worth less than the prepayment.');
+      const upd = await client.query(
+        `UPDATE assets SET current_value = current_value - $2, valuation_date = GREATEST(CURRENT_DATE, purchase_date)
+          WHERE id = $1 RETURNING current_value, valuation_date`,
+        [input.fundingAssetId, input.amount],
+      );
+      await client.query(
+        `INSERT INTO asset_valuations (asset_id, valuation_date, value, source) VALUES ($1, $2, $3, 'revaluation')`,
+        [input.fundingAssetId, upd.rows[0].valuation_date, upd.rows[0].current_value],
+      );
+    }
+&nbsp;
+    await client.query("DELETE FROM emi_schedule WHERE loan_id = $1 AND status &lt;&gt; 'paid'", [loanId]);
+    await client.query(
+      `INSERT INTO emi_schedule (loan_id, installment_no, due_date, emi_amount, principal_component, interest_component, closing_balance)
+       SELECT $1, $2 + t.ord - 1, t.due::date, t.emi, t.principal, t.interest, t.balance
+         FROM UNNEST($3::text[], $4::numeric[], $5::numeric[], $6::numeric[], $7::numeric[])
+              WITH ORDINALITY AS t(due, emi, principal, interest, balance, ord)`,
+      [
+        loanId, s.firstUnpaidNo,
+        p.schedule.map((x) =&gt; x.dueDate), p.schedule.map((x) =&gt; x.emiAmount), p.schedule.map((x) =&gt; x.principalComponent),
+        p.schedule.map((x) =&gt; x.interestComponent), p.schedule.map((x) =&gt; x.closingBalance),
+      ],
+    );
+    await client.query(
+      `UPDATE loans SET tenure_months = (SELECT max(installment_no) FROM emi_schedule WHERE loan_id = $1) WHERE id = $1`,
+      [loanId],
+    );
+&nbsp;
+    await client.query(
+      `INSERT INTO transactions (user_id, txn_type, amount, txn_date, category, description, related_loan_id, related_asset_id)
+       VALUES ($1, 'loan', $2, CURRENT_DATE, 'Prepayment', $3, $4, $5)`,
+      [userId, input.amount, `Prepayment – ${s.lender} (${input.mode === 'reduce_tenure' ? 'reduce tenure' : 'reduce EMI'})`, loanId, input.fundingAssetId ?? null],
+    );
+&nbsp;
+    const rec = await client.query(
+      `INSERT INTO loan_prepayments (loan_id, user_id, amount, mode, funded_from_asset_id, outstanding_before, outstanding_after,
+                                     emi_before, emi_after, months_before, months_after, interest_saved)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id`,
+      [loanId, userId, input.amount, input.mode, input.fundingAssetId ?? null, p.outstandingBefore, p.outstandingAfter,
+        p.emiBefore, p.emiAfter, p.monthsBefore, p.monthsAfter, p.interestSaved],
+    );
+    const { schedule, ...rest } = p;
+    return { prepaymentId: Number(rec.rows[0].id), loanId, ...rest, installmentsAfter: schedule.length };
+  });
+}
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export async function listPrepayments(userId: number, loanId: number) {</span></span>
+<span class="cstat-no" title="statement not covered" >  const rows = await query(</span>
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    `SELECT id, amount, mode, to_char(prepaid_on, 'YYYY-MM-DD') AS prepaid_on, interest_saved, emi_after, months_after</span></span>
+<span class="cstat-no" title="statement not covered" >       FROM loan_prepayments WHERE loan_id = $1 AND user_id = $2 ORDER BY id`,</span>
+<span class="cstat-no" title="statement not covered" >    [loanId, userId],</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
+<span class="cstat-no" title="statement not covered" >  return rows.map((r) =&gt; ({</span>
+<span class="cstat-no" title="statement not covered" >    id: Number(r.id), amount: Number(r.amount), mode: String(r.mode), prepaidOn: String(r.prepaid_on),</span>
+<span class="cstat-no" title="statement not covered" >    interestSaved: Number(r.interest_saved), emiAfter: Number(r.emi_after), monthsAfter: Number(r.months_after),</span>
+<span class="cstat-no" title="statement not covered" >  }));</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-11-02T14:18:30.098Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    

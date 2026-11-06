@@ -1,0 +1,1904 @@
+{
+ "runAt": "2026-11-02T14:17:55.796Z",
+ "results": [
+  {
+   "id": "TC-001",
+   "pass": true,
+   "actual": "HTTP 201; role individual; no password/hash in body: true; ww_session cookie set: true"
+  },
+  {
+   "id": "TC-002",
+   "pass": true,
+   "actual": "HTTP 409 \"An account with that email already exists.\"; user rows unchanged: true; cookie set: false"
+  },
+  {
+   "id": "TC-003",
+   "pass": true,
+   "actual": "(a) HTTP 422 \"Password must be at least 8 characters\"; (b) HTTP 201"
+  },
+  {
+   "id": "TC-004",
+   "pass": true,
+   "actual": "(a) HTTP 422 panNumber: \"PAN must look like ABCDE1234F\"; (b) HTTP 422 email: \"Invalid email\""
+  },
+  {
+   "id": "TC-005",
+   "pass": true,
+   "actual": "HTTP 200; cookie flags: Path=/, Expires=Mon, 09 Nov 2026 14:17:10 GMT, Max-Age=604800, Secure, HttpOnly, SameSite=lax; JWT alg HS256, iss wealthwise, sub = user id: true, exp present: true"
+  },
+  {
+   "id": "TC-006",
+   "pass": true,
+   "actual": "All 10 \u2192 401 \"Invalid email or password.\", no cookie: true; mean 358 ms (existing) vs 417 ms (unknown)"
+  },
+  {
+   "id": "TC-007",
+   "pass": true,
+   "actual": "me before: priya@wealthwise.dev; logout HTTP 200 {\"ok\":true}, cookie cleared: true; me after: {\"user\":null}; /api/assets \u2192 401"
+  },
+  {
+   "id": "TC-008",
+   "pass": true,
+   "actual": "6 APIs \u2192 401 \"Authentication required.\": true; /dashboard \u2192 HTTP 307 to /login"
+  },
+  {
+   "id": "TC-009",
+   "pass": true,
+   "actual": "/api/advisor/clients \u2192 403 \"Advisor role required.\"; /api/news/refresh \u2192 403 \"Advisor role required.\""
+  },
+  {
+   "id": "TC-010",
+   "pass": true,
+   "actual": "HTTP 201; liquidity defaulted to 'liquid'; in list; total assets +105000, net worth +105000"
+  },
+  {
+   "id": "TC-011",
+   "pass": true,
+   "actual": "HTTP 422; valuationDate: \"Valuation date cannot be before the purchase date\"; no asset created: true"
+  },
+  {
+   "id": "TC-012",
+   "pass": true,
+   "actual": "(a) 201; (b) 422 currentValue error: true; (c) 422 assetType error: true"
+  },
+  {
+   "id": "TC-013",
+   "pass": true,
+   "actual": "PUT HTTP 200; history: 2025-04-01 105000 (manual-entry) \u2192 2026-11-02 110000 (revaluation)"
+  },
+  {
+   "id": "TC-014",
+   "pass": true,
+   "actual": "DELETE 200 {\"ok\":true}; GET \u2192 404; transaction kept: true, relatedAssetId = null"
+  },
+  {
+   "id": "TC-015",
+   "pass": true,
+   "actual": "HTTP 201; 240 installments; EMI \u20b943391.16; \u03a3 principal \u20b95000000; final balance 0; liabilities +5000000"
+  },
+  {
+   "id": "TC-016",
+   "pass": true,
+   "actual": "rate 0 \u2192 422; rate 60.01 \u2192 422; rate 0.01 \u2192 201; rate 60 \u2192 201; tenure 0 \u2192 422; tenure 481 \u2192 422; tenure 1 \u2192 201; tenure 480 \u2192 201; installments for tenure 1/480: 1/480"
+  },
+  {
+   "id": "TC-017",
+   "pass": true,
+   "actual": "2 loans each with EMI, paid count, outstanding, next due date: true; HDFC Bank schedule 60 rows with all columns; detail page HTTP 200"
+  },
+  {
+   "id": "TC-018",
+   "pass": true,
+   "actual": "HTTP 409 \"This loan already has paid installments, so its terms cannot be changed.\"; schedule unchanged: true"
+  },
+  {
+   "id": "TC-019",
+   "pass": true,
+   "actual": "HTTP 200 amount 43391.16; status paid on 2026-11-02; loan ledger entries 27 \u2192 28 ('EMI Payment'); outstanding fell by 7974.49 (principal component 7974.49)"
+  },
+  {
+   "id": "TC-020",
+   "pass": true,
+   "actual": "HTTP 404 \"Installment not found, not yours, or already paid.\"; ledger unchanged: true"
+  },
+  {
+   "id": "TC-021",
+   "pass": true,
+   "actual": "pay HTTP 200, loanClosed true; loan status 'closed'; in dues: false"
+  },
+  {
+   "id": "TC-022",
+   "pass": true,
+   "actual": "markedOverdue 1; installment due 14 days ago \u2192 overdue/overdue (days until due -14); due in 3 days \u2192 due_this_week"
+  },
+  {
+   "id": "TC-023",
+   "pass": true,
+   "actual": "HTTP 200; reduce tenure saves \u20b91422060.03 (213\u2192169 months), reduce EMI saves \u20b9470090.24 (EMI 43391.16\u219238836.75); stored schedule unchanged: true"
+  },
+  {
+   "id": "TC-024",
+   "pass": true,
+   "actual": "HTTP 201; outstanding 4763640.39 \u2192 4463640.39; FD 500000 \u2192 200000; net worth 5287014.37 \u2192 5287014.37 (unchanged: true); prepayments recorded: 1"
+  },
+  {
+   "id": "TC-025",
+   "pass": true,
+   "actual": "(a) 422 \"Amount must be less than the outstanding principal.\"; (b) 422 \"The funding asset is worth less than the prepayment.\"; loan, schedule and asset unchanged: true"
+  },
+  {
+   "id": "TC-026",
+   "pass": true,
+   "actual": "POST 201; found by filter: true; DELETE 200; gone: true"
+  },
+  {
+   "id": "TC-027",
+   "pass": true,
+   "actual": "amount 0 \u2192 422; -5 \u2192 422; 0.01 \u2192 201; date '01-10-2026' \u2192 422 \"Expected YYYY-MM-DD\"; type 'gift' \u2192 422"
+  },
+  {
+   "id": "TC-028",
+   "pass": true,
+   "actual": "\"pharmacy\" \u2192 rows including \"Apollo Pharmacy\" (stem match); \"\\\"indian oil\\\"\" \u2192 12 rows, every one containing the phrase \"Indian Oil\"; the row \"Oil and Indian spices\" was not returned"
+  },
+  {
+   "id": "TC-029",
+   "pass": true,
+   "actual": "HTTP 200; bank HDFC; 3 rows (salary 165000 income on 2026-10-01; Swiggy \u2192 Food); rejected: Invalid date \"31/02/26\"; Missing description; ledger unchanged: true"
+  },
+  {
+   "id": "TC-030",
+   "pass": true,
+   "actual": "first: 201 inserted 3, duplicates 0; second: 201 inserted 0, duplicates 3; batches listed: 2"
+  },
+  {
+   "id": "TC-031",
+   "pass": true,
+   "actual": "(a) 415 \"Only .csv files can be imported.\"; (b) 422 \"Could not find a header row with Date, Description/Narration and amount columns.\"; (c) 413 \"The file is larger than 5 MB.\"; (d) 422 \"Could not find a header row with Date, Description/Narration and amount columns.\""
+  },
+  {
+   "id": "TC-032",
+   "pass": true,
+   "actual": "HTTP 422 \"A value is not valid (for example an impossible date or a number out of range).\" (2nd row has an impossible date the database rejects); transactions 3 \u2192 3; batch rows written: 0. Also covered by tests/db/imports.test.ts and atomicity.test.ts"
+  },
+  {
+   "id": "TC-033",
+   "pass": true,
+   "actual": "POST 201, recategorised 1; user 2 row 'Business Expense'; user 3 row 'Shopping'; delete system rule \u2192 404"
+  },
+  {
+   "id": "TC-034",
+   "pass": true,
+   "actual": "HTTP 200 in 1.0 s; merchant 'APOLLO PHARMACY', amount 455.28 (Grand Total; Sub Total is 435.00), date 2026-10-12, confidence 94%, category 'Health'; ledger unchanged: true"
+  },
+  {
+   "id": "TC-035",
+   "pass": true,
+   "actual": "confirm 201 (filed in vault: true); repeat 409 \"This receipt is already recorded.\"; GIF 415; 9 MB JPEG 413"
+  },
+  {
+   "id": "TC-036",
+   "pass": true,
+   "actual": "POST 201; stored as b7cbe1d9-4bbc-43a3-baac-8d18b3d13847.pdf; found by tag and text: true; stats count 1; DELETE 200; gone: true"
+  },
+  {
+   "id": "TC-037",
+   "pass": true,
+   "actual": "(a) .exe 415; (b) .html 415; (c) 10 MB+1 413; (d) '../../evil.pdf' 201, stored as 3a57917f-8d04-4b7d-8106-4d2235bf9649.pdf inside uploads/: true (original name kept as metadata '../../evil.pdf')"
+  },
+  {
+   "id": "TC-038",
+   "pass": true,
+   "actual": "tests/db/vault.test.ts \"vault reports unavailable (503) when storage cannot be written\": passed \u2013 POST /api/vault returns 503 \"The document vault is unavailable right now\u2026\""
+  },
+  {
+   "id": "TC-039",
+   "pass": true,
+   "actual": "priya: assets 10407000 = \u03a3 assets 10407000; liabilities 5119985.63 = \u03a3 outstanding 5119985.63; allocation \u03a3 100.0 %; dues 4; cashflow 12 months; recurring 7 (all \u2265 3 months); new user HTTP 200 with zero totals"
+  },
+  {
+   "id": "TC-040",
+   "pass": true,
+   "actual": "score 571 (Fair) with 5 factors (Payment history 35%, Debt to assets 25%, Loan mix 15%, Length of history 15%, Track record 10%); disclaimer \"Indicative score derived from your WealthWise records only. It is not a CIBIL, Experian or Equifax credit score.\"; after one overdue installment: 545"
+  },
+  {
+   "id": "TC-041",
+   "pass": true,
+   "actual": "HTTP 200; score 767; 2 eligible ranked #1 Home Loan Classic 9.04%, #2 Home Loan Advantage 9.12%; ineligible: Easy Home (Maximum tenure is 300 months)"
+  },
+  {
+   "id": "TC-042",
+   "pass": true,
+   "actual": "(a) 200; scenario gain at month 60 \u20b9127823.8 vs remaining interest \u20b9127823.8; (b) months=5 \u2192 422; (c) another user's loan \u2192 404 \"Loan not found.\""
+  },
+  {
+   "id": "TC-043",
+   "pass": true,
+   "actual": "FY 2025-26: expense 100 (31 Mar only); FY 2026-27: expense 200 (1 Apr only); sections summary, category spend, loans, tax hints present: true"
+  },
+  {
+   "id": "TC-044",
+   "pass": true,
+   "actual": "HTTP 200; application/pdf; attachment; filename=\"wealthwise-statement-2026-11-02.pdf\"; Cache-Control no-store; sections present: true; PAN shown as XXXXXX234K, full PAN absent: true; amounts as \"Rs. 1,07,07,000.00\""
+  },
+  {
+   "id": "TC-045",
+   "pass": true,
+   "actual": "after two reads: 2 reminders (due_soon,overdue), unread 2; mark one read \u2192 1; mark all \u2192 0"
+  },
+  {
+   "id": "TC-046",
+   "pass": true,
+   "actual": "feed source 'sample' (RBI feed unreachable from the test network), 3 articles, all labelled illustrative: true; +25 bps impact on 1 floating loan(s): SBI EMI 43368.4 \u2192 44029.57; non-rate article: \"This article does not describe a lending-rate change.\"; advisor refresh \u2192 503 \"The RBI news feed is unavailable (fetch failed).\""
+  },
+  {
+   "id": "TC-047",
+   "pass": true,
+   "actual": "clients: Priya Sharma, Rahul Verma (each with net worth summary); priya's detail 200 with 5 assets; non-assigned user \u2192 403 \"This user is not your client.\"; rahul calling the advisor API \u2192 403 \"Advisor role required.\""
+  },
+  {
+   "id": "TC-048",
+   "pass": true,
+   "actual": "stored hash starts '$2a$12$' (60 chars); password or hash found in responses or server log: false"
+  },
+  {
+   "id": "TC-049",
+   "pass": true,
+   "actual": "(a) tampered, (b) other secret, (c) expired, (d) alg none \u2192 /api/assets 401/401/401/401; /api/auth/me user null/null/null/null"
+  },
+  {
+   "id": "TC-050",
+   "pass": true,
+   "actual": "loan GET, EMI pay, asset PUT, asset DELETE, transaction DELETE, prepay, vault DELETE, vault file download \u2192 404/404/404/404/404/404/404/404; priya's data unchanged: true"
+  },
+  {
+   "id": "TC-051",
+   "pass": true,
+   "actual": "search payload \u2192 200 with 0 rows; DROP TABLE payload \u2192 200 with 0 rows; error details leaked: false; transactions table intact (+1 row from the script-text entry); script description stored as plain text (React escapes it on the ledger page)"
+  },
+  {
+   "id": "TC-052",
+   "pass": true,
+   "actual": "HTTP 500 body {\"error\":\"Internal server error\"}; connection details or stack in body: false; detail written to the server log: true"
+  },
+  {
+   "id": "TC-053",
+   "pass": true,
+   "actual": "31-character secret: login HTTP 500, no cookie, server log \"JWT_SECRET must be set and at least 32 characters long\"; hard-coded secrets / connection strings in src or scripts: none; .env ignored by Git: true"
+  },
+  {
+   "id": "TC-054",
+   "pass": true,
+   "actual": "dashboard p90 9 ms over 20 requests (max 13 ms); OCR scans 0.8 s, 0.7 s, 0.8 s, 0.8 s, 0.8 s"
+  },
+  {
+   "id": "TC-055",
+   "pass": true,
+   "actual": "(a) EMI for \u20b91,20,000 at 0 % over 12 months = \u20b910000, no division error; (b) \u20b91,00,001 at 7.25 % for 37 months: 37 installments, \u03a3 principal \u20b9100001, final balance 0"
+  },
+  {
+   "id": "TC-056",
+   "pass": true,
+   "actual": "with the RBI feed unreachable: asset, loan, EMI payment, transaction, dashboard, import preview and commit \u2192 201/201/200/201/200/200/201; news fell back to cached/sample articles (3 ms, then 3 ms \u2013 failed fetch not retried within 60 s); vault storage failure \u2192 503 covered by TC-038"
+  },
+  {
+   "id": "TC-057",
+   "pass": true,
+   "actual": "dark theme kept after reload: true; dark class set before first paint: true; amounts like \u20b952,87,014.37: true; every chart has a legend, labels or table: true; ledger shows \"<script>\" text without running it: true"
+  },
+  {
+   "id": "TC-058",
+   "pass": true,
+   "actual": "typecheck: 0 errors; unit tests: 73 passed, 0 failed; database tests: 54 passed, 0 failed; layering checked by tests/unit/architecture.test.ts (part of the unit run)"
+  },
+  {
+   "id": "TC-059",
+   "pass": true,
+   "actual": "Fresh checkout \u2192 npm install \u2192 npm run db:migrate \u2192 npm run db:seed \u2192 npm run build \u2192 npm start completed without code changes; app served on the chosen port (/login HTTP 200); demo login works (TC-005). Same steps run in GitHub Actions CI on a clean runner for every PR"
+  }
+ ],
+ "supplementary": [
+  {
+   "id": "SV-01",
+   "desc": "Health check reports database connectivity",
+   "pass": true,
+   "actual": "HTTP 200 {\"status\":\"ok\",\"database\":\"connected\",\"time\":\"2026-11-02 14:17:54.638807+00\"}"
+  },
+  {
+   "id": "SV-02",
+   "desc": "Change loan status with PATCH",
+   "pass": true,
+   "actual": "PATCH defaulted \u2192 200; PATCH 'paused' \u2192 422; DELETE \u2192 200; GET after delete \u2192 404"
+  },
+  {
+   "id": "SV-03",
+   "desc": "Individual chooses, views and removes an advisor",
+   "pass": true,
+   "actual": "PUT \u2192 200; GET \u2192 advisor@wealthwise.dev; appears in advisor's client list: true; non-advisor email \u2192 404; advisor calling it \u2192 403; DELETE \u2192 200, then advisor null"
+  },
+  {
+   "id": "SV-04",
+   "desc": "Delete own categorisation rule",
+   "pass": true,
+   "actual": "POST \u2192 201; DELETE own rule \u2192 200; DELETE again \u2192 404"
+  },
+  {
+   "id": "SV-05",
+   "desc": "Owner downloads a vault file",
+   "pass": true,
+   "actual": "HTTP 200; application/pdf; attachment; filename=\"d.pdf\"; nosniff: true; 4096 bytes"
+  }
+ ],
+ "ops": [
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   409
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   422
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   422
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   422
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   401
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/logout",
+   200
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   401
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/loans",
+   401
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   401
+  ],
+  [
+   "GET",
+   "/api/vault",
+   401
+  ],
+  [
+   "GET",
+   "/api/reports/statement",
+   401
+  ],
+  [
+   "GET",
+   "/api/advisor/clients",
+   403
+  ],
+  [
+   "POST",
+   "/api/news/refresh",
+   403
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/assets",
+   201
+  ],
+  [
+   "GET",
+   "/api/assets",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/assets",
+   422
+  ],
+  [
+   "POST",
+   "/api/assets",
+   201
+  ],
+  [
+   "POST",
+   "/api/assets",
+   422
+  ],
+  [
+   "POST",
+   "/api/assets",
+   422
+  ],
+  [
+   "DELETE",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "PUT",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "POST",
+   "/api/assets",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "DELETE",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   404
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans",
+   422
+  ],
+  [
+   "POST",
+   "/api/loans",
+   422
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   422
+  ],
+  [
+   "POST",
+   "/api/loans",
+   422
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "PUT",
+   "/api/loans/{id}",
+   409
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   404
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/dues",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/dues",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans/{id}/prepay/simulate",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans/{id}/prepay",
+   201
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/prepay",
+   200
+  ],
+  [
+   "POST",
+   "/api/assets",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "POST",
+   "/api/loans/{id}/prepay",
+   422
+  ],
+  [
+   "POST",
+   "/api/loans/{id}/prepay",
+   422
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/transactions/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   422
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   422
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   422
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   422
+  ],
+  [
+   "DELETE",
+   "/api/transactions/{id}",
+   200
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   201
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   201
+  ],
+  [
+   "GET",
+   "/api/imports/batches",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   415
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   422
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   413
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   422
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   422
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   201
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   201
+  ],
+  [
+   "POST",
+   "/api/rules",
+   201
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/rules",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/rules/{id}",
+   404
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/confirm",
+   201
+  ],
+  [
+   "POST",
+   "/api/receipts/confirm",
+   409
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   415
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   413
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "POST",
+   "/api/vault",
+   201
+  ],
+  [
+   "GET",
+   "/api/vault",
+   200
+  ],
+  [
+   "GET",
+   "/api/vault",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/vault/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/vault",
+   200
+  ],
+  [
+   "POST",
+   "/api/vault",
+   415
+  ],
+  [
+   "POST",
+   "/api/vault",
+   415
+  ],
+  [
+   "POST",
+   "/api/vault",
+   413
+  ],
+  [
+   "POST",
+   "/api/vault",
+   201
+  ],
+  [
+   "DELETE",
+   "/api/vault/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "GET",
+   "/api/insights/score",
+   200
+  ],
+  [
+   "GET",
+   "/api/insights/score",
+   200
+  ],
+  [
+   "POST",
+   "/api/insights/recommend",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/insights/projection",
+   200
+  ],
+  [
+   "GET",
+   "/api/insights/projection",
+   422
+  ],
+  [
+   "GET",
+   "/api/insights/projection",
+   404
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "GET",
+   "/api/reports/fy",
+   200
+  ],
+  [
+   "GET",
+   "/api/reports/fy",
+   200
+  ],
+  [
+   "GET",
+   "/api/reports/statement",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/notifications",
+   200
+  ],
+  [
+   "GET",
+   "/api/notifications",
+   200
+  ],
+  [
+   "POST",
+   "/api/notifications",
+   200
+  ],
+  [
+   "GET",
+   "/api/notifications",
+   200
+  ],
+  [
+   "POST",
+   "/api/notifications",
+   200
+  ],
+  [
+   "GET",
+   "/api/notifications",
+   200
+  ],
+  [
+   "GET",
+   "/api/news",
+   200
+  ],
+  [
+   "GET",
+   "/api/news/{id}/impact",
+   200
+  ],
+  [
+   "GET",
+   "/api/news/{id}/impact",
+   200
+  ],
+  [
+   "POST",
+   "/api/news/refresh",
+   503
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "GET",
+   "/api/advisor/clients",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/clients/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/clients/{id}",
+   403
+  ],
+  [
+   "GET",
+   "/api/advisor/clients/{id}",
+   403
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/clients",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   401
+  ],
+  [
+   "GET",
+   "/api/auth/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/vault",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/vault",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}",
+   404
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   404
+  ],
+  [
+   "PUT",
+   "/api/assets/{id}",
+   404
+  ],
+  [
+   "DELETE",
+   "/api/assets/{id}",
+   404
+  ],
+  [
+   "DELETE",
+   "/api/transactions/{id}",
+   404
+  ],
+  [
+   "POST",
+   "/api/loans/{id}/prepay",
+   404
+  ],
+  [
+   "DELETE",
+   "/api/vault/{id}",
+   404
+  ],
+  [
+   "GET",
+   "/api/vault/{id}/file",
+   404
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "GET",
+   "/api/assets/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/vault",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/vault/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "GET",
+   "/api/transactions",
+   200
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "POST",
+   "/api/auth/login",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/receipts/scan",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/assets",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "GET",
+   "/api/loans/{id}/schedule",
+   200
+  ],
+  [
+   "POST",
+   "/api/emi/{id}/pay",
+   200
+  ],
+  [
+   "POST",
+   "/api/transactions",
+   201
+  ],
+  [
+   "GET",
+   "/api/dashboard",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/preview",
+   200
+  ],
+  [
+   "POST",
+   "/api/imports/commit",
+   201
+  ],
+  [
+   "GET",
+   "/api/news",
+   200
+  ],
+  [
+   "GET",
+   "/api/news",
+   200
+  ],
+  [
+   "GET",
+   "/api/health",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/loans",
+   201
+  ],
+  [
+   "PATCH",
+   "/api/loans/{id}",
+   200
+  ],
+  [
+   "PATCH",
+   "/api/loans/{id}",
+   422
+  ],
+  [
+   "DELETE",
+   "/api/loans/{id}",
+   200
+  ],
+  [
+   "GET",
+   "/api/loans/{id}",
+   404
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "PUT",
+   "/api/advisor/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/clients",
+   200
+  ],
+  [
+   "PUT",
+   "/api/advisor/me",
+   404
+  ],
+  [
+   "GET",
+   "/api/advisor/me",
+   403
+  ],
+  [
+   "DELETE",
+   "/api/advisor/me",
+   200
+  ],
+  [
+   "GET",
+   "/api/advisor/me",
+   200
+  ],
+  [
+   "POST",
+   "/api/auth/signup",
+   201
+  ],
+  [
+   "POST",
+   "/api/rules",
+   201
+  ],
+  [
+   "DELETE",
+   "/api/rules/{id}",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/rules/{id}",
+   404
+  ],
+  [
+   "POST",
+   "/api/vault",
+   201
+  ],
+  [
+   "GET",
+   "/api/vault/{id}/file",
+   200
+  ],
+  [
+   "DELETE",
+   "/api/vault/{id}",
+   200
+  ]
+ ]
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="there is something to check" time="0.001023" classname="test"/>
+	<testcase name="UI files never import the database layer" time="0.001494" classname="test"/>
+	<testcase name="route handlers contain no inline SQL and do not touch pg directly" time="0.000951" classname="test"/>
+	<testcase name="every route handler sends errors through apiError()" time="0.002035" classname="test"/>
+	<testcase name="only the data-access layer imports pg" time="0.003451" classname="test"/>
+	<testcase name="weights add up to 1" time="0.001127" classname="test"/>
+	<testcase name="score is always within 300–900" time="0.000631" classname="test"/>
+	<testcase name="a good record scores Excellent" time="0.000142" classname="test"/>
+	<testcase name="an overdue installment lowers the score (AC-19)" time="0.000149" classname="test"/>
+	<testcase name="more debt relative to assets lowers the score" time="0.000136" classname="test"/>
+	<testcase name="reads quoted fields with commas inside" time="0.001922" classname="test"/>
+	<testcase name="parses day-first dates and rejects impossible ones" time="0.000727" classname="test"/>
+	<testcase name="parses Indian digit grouping" time="0.000271" classname="test"/>
+	<testcase name="HDFC layout: skips preamble, finds columns by name, rejects bad rows with reasons" time="0.001060" classname="test"/>
+	<testcase name="ICICI layout with Debit/Credit columns and ISO dates" time="0.000380" classname="test"/>
+	<testcase name="the same row always gives the same 32-character hash" time="0.000282" classname="test"/>
+	<testcase name="a file without a recognisable header is refused" time="0.000475" classname="test"/>
+	<testcase name="EMI for ₹50,00,000 at 8.5% over 240 months is ₹43,391.16" time="0.001015" classname="test"/>
+	<testcase name="schedule principal parts add up exactly to the principal and end at 0.00 (NFR-02)" time="0.001252" classname="test"/>
+	<testcase name="odd amounts and short tenures still close at exactly 0.00" time="0.000274" classname="test"/>
+	<testcase name="due dates clamp to the end of short months" time="0.000171" classname="test"/>
+	<testcase name="detects allowed types from the first bytes" time="0.001157" classname="test"/>
+	<testcase name="rejects GIF, executables and text even if renamed" time="0.000197" classname="test"/>
+	<testcase name="saves under a random name and refuses path tricks" time="0.007859" classname="test"/>
+	<testcase name="formatINR uses Indian digit grouping" time="0.015425" classname="test"/>
+	<testcase name="formatINR keeps two decimals for paise" time="0.000285" classname="test"/>
+	<testcase name="31 March belongs to the earlier FY, 1 April to the later one (AC-22)" time="0.001015" classname="test"/>
+	<testcase name="labels and ranges" time="0.001003" classname="test"/>
+	<testcase name="tax hints are capped at the section limits" time="0.000329" classname="test"/>
+	<testcase name="no qualifying loans → no hints" time="0.000127" classname="test"/>
+	<testcase name="parses items, decodes CDATA/entities/HTML and skips untitled items" time="0.005181" classname="test"/>
+	<testcase name="detects rate cuts, hikes, &amp;quot;from … to …&amp;quot; and unchanged" time="0.000762" classname="test"/>
+	<testcase name="categories" time="0.000320" classname="test"/>
+	<testcase name="a +25 bps change raises the EMI on a floating loan (AC-25)" time="0.000500" classname="test"/>
+	<testcase name="decode handles numeric entities" time="0.000214" classname="test"/>
+	<testcase name="PAN keeps only the last four characters" time="0.001099" classname="test"/>
+	<testcase name="amounts use Rs. and Indian grouping" time="0.015556" classname="test"/>
+	<testcase name="builds a PDF that shows the masked PAN and never the full PAN (SR-09)" time="0.029500" classname="test"/>
+	<testcase name="reduce tenure keeps the EMI and finishes earlier" time="0.001475" classname="test"/>
+	<testcase name="reduce EMI keeps the end date and lowers the EMI" time="0.000375" classname="test"/>
+	<testcase name="reducing tenure saves more interest than reducing EMI" time="0.000949" classname="test"/>
+	<testcase name="principal in the new schedule adds up to the new outstanding" time="0.000287" classname="test"/>
+	<testcase name="amount must be positive and less than the outstanding" time="0.000580" classname="test"/>
+	<testcase name="no loans and no growth: net worth rises by the surplus each month" time="0.001227" classname="test"/>
+	<testcase name="growth compounds monthly" time="0.000228" classname="test"/>
+	<testcase name="liabilities follow the EMI schedule and reach zero" time="0.000242" classname="test"/>
+	<testcase name="at 0% growth, closing a loan now gains exactly its remaining interest" time="0.000405" classname="test"/>
+	<testcase name="pharmacy receipt: merchant, grand total (not sub total) and date" time="0.003242" classname="test"/>
+	<testcase name="skips &amp;quot;TAX INVOICE&amp;quot; header and reads Net Amount with ₹ and Indian commas" time="0.000842" classname="test"/>
+	<testcase name="no total label: falls back to the largest amount" time="0.000307" classname="test"/>
+	<testcase name="unreadable text gives nulls instead of guesses" time="0.000297" classname="test"/>
+	<testcase name="rate moves from max_rate at min_score to min_rate at 900" time="0.001127" classname="test"/>
+	<testcase name="ineligible products carry a reason and no rank (AC-20)" time="0.000570" classname="test"/>
+	<testcase name="eligible products are ranked by total cost, cheapest first" time="0.001101" classname="test"/>
+	<testcase name="amount and tenure limits are checked" time="0.015478" classname="test"/>
+	<testcase name="SR-01: passwords are bcrypt-hashed with cost 12, never stored as plain text" time="1.491020" classname="test"/>
+	<testcase name="SR-02: a tampered or wrongly signed session token is rejected" time="0.004973" classname="test"/>
+	<testcase name="SR-02: a short JWT secret is refused" time="0.001328" classname="test"/>
+	<testcase name="SR-06: ids from the URL must be positive integers" time="0.000815" classname="test"/>
+	<testcase name="SR-08: unexpected errors return a generic 500 without internal details" time="0.006332" classname="test"/>
+	<testcase name="SR-08: database constraint errors map to safe messages" time="0.000500" classname="test"/>
+	<testcase name="SR-06: values rejected by the database (impossible date, out-of-range number) map to 422" time="0.001274" classname="test"/>
+	<testcase name="SR-09: PAN is masked on statements" time="0.000173" classname="test"/>
+	<testcase name="accepts an allowed type and reports its detected type" time="0.003397" classname="test"/>
+	<testcase name="missing or empty file → 422" time="0.000903" classname="test"/>
+	<testcase name="too large → 413 before the content is inspected" time="0.000221" classname="test"/>
+	<testcase name="content not in the allow-list → 415, even with an allowed-looking name" time="0.000446" classname="test"/>
+	<testcase name="sign-up: password length 7/8, PAN format, email normalised (TC-003, TC-004)" time="0.004416" classname="test"/>
+	<testcase name="asset: valuation not before purchase; values ≥ 0; known types only (TC-011, TC-012)" time="0.001309" classname="test"/>
+	<testcase name="loan: rate 0 &lt; r ≤ 60 and tenure 1–480 (TC-016)" time="0.000678" classname="test"/>
+	<testcase name="transaction: amount > 0, ISO date, known type; filter limit ≤ 500 (TC-027)" time="0.000674" classname="test"/>
+	<testcase name="import commit: 1–5000 rows, income/expense only (FR-14)" time="0.077334" classname="test"/>
+	<testcase name="rules, receipts, vault, prepayment, projection and recommendation schemas" time="0.003507" classname="test"/>
+	<!-- tests 73 -->
+	<!-- suites 0 -->
+	<!-- pass 73 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 7709.881966 -->
+</testsuites>

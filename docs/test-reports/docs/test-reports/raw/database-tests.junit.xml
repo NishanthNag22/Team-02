@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="advisor sees only assigned clients; other users are 403 (AC-26)" time="0.057116" classname="test"/>
+	<testcase name="only advisor accounts can be chosen" time="0.004668" classname="test"/>
+	<testcase name="loan creation: a schedule failure leaves no loan behind" time="0.035847" classname="test"/>
+	<testcase name="EMI payment: a ledger failure leaves the installment unpaid" time="0.010267" classname="test"/>
+	<testcase name="prepayment: a failure at the last step leaves schedule, ledger and asset unchanged" time="0.025947" classname="test"/>
+	<testcase name="score is 300–900 with 5 factors and the disclaimer (FR-19)" time="0.043536" classname="test"/>
+	<testcase name="an overdue installment lowers the score; reading twice adds no history row (AC-19)" time="0.079823" classname="test"/>
+	<testcase name="preview suggests categories and saves nothing (FR-14)" time="0.038016" classname="test"/>
+	<testcase name="importing the same statement twice adds nothing the second time" time="0.017312" classname="test"/>
+	<testcase name="a failing row rolls back the whole batch (NFR-03)" time="0.005878" classname="test"/>
+	<testcase name="one user's import does not mark another user's rows as duplicates" time="0.012128" classname="test"/>
+	<testcase name="editing terms regenerates the schedule while nothing is paid (FR-08)" time="0.069810" classname="test"/>
+	<testcase name="editing is refused after a payment or a prepayment (409); other users get null (FR-08, FR-11)" time="0.027479" classname="test"/>
+	<testcase name="status change and delete are owner-only (FR-08, SR-05)" time="0.010816" classname="test"/>
+	<testcase name="FY list includes years with paid EMIs and the current FY (FR-22)" time="0.009181" classname="test"/>
+	<testcase name="refresh stores parsed articles and is idempotent" time="0.043683" classname="test"/>
+	<testcase name="feed errors become 503 and the news page falls back without calling the feed again" time="0.012813" classname="test"/>
+	<testcase name="+25 bps article: EMI change for floating loans only (AC-25)" time="0.044634" classname="test"/>
+	<testcase name="cached articles are listed and can be filtered by category" time="0.005295" classname="test"/>
+	<testcase name="unknown article is 404" time="0.003073" classname="test"/>
+	<testcase name="reminders are created once per installment and kind (AC-24)" time="0.049986" classname="test"/>
+	<testcase name="mark one read lowers unread by one; mark all sets it to 0" time="0.020486" classname="test"/>
+	<testcase name="dashboard and ledger search p90 under 2 seconds with 3,000 transactions (NFR-01)" time="0.399698" classname="test"/>
+	<testcase name="simulate saves nothing and shows both options (FR-11)" time="0.063357" classname="test"/>
+	<testcase name="apply reduce-tenure: paid rows untouched, outstanding drops by the amount, ledger entry written" time="0.057302" classname="test"/>
+	<testcase name="apply funded from an asset deducts the asset; too-small asset is refused and nothing changes" time="0.046303" classname="test"/>
+	<testcase name="amount must be below outstanding; other user gets 404" time="0.029848" classname="test"/>
+	<testcase name="projection starts from today's assets and loans (FR-21)" time="0.065762" classname="test"/>
+	<testcase name="closing another user's loan is a 404" time="0.019435" classname="test"/>
+	<testcase name="OCR reads the sample receipt (FR-16, NFR-01: under 10 s)" time="0.941786" classname="test"/>
+	<testcase name="confirm saves an expense, files the image, and refuses the same receipt again" time="0.035717" classname="test"/>
+	<testcase name="home loan comparison returns the catalogue ranked, ineligible ones with reasons (FR-20)" time="0.047328" classname="test"/>
+	<testcase name="a too-long tenure makes vehicle products ineligible" time="0.008300" classname="test"/>
+	<testcase name="31 March and 1 April land in different financial years (AC-22)" time="0.050891" classname="test"/>
+	<testcase name="home loan EMIs paid in the FY produce 80C and 24(b) hints" time="0.050026" classname="test"/>
+	<testcase name="system rules categorise common merchants; unknown stays Uncategorized" time="0.025870" classname="test"/>
+	<testcase name="a user's own rule beats the system rule only for that user (FR-15)" time="0.005245" classname="test"/>
+	<testcase name="adding a rule re-categorises existing matching transactions" time="0.012535" classname="test"/>
+	<testcase name="system rules cannot be deleted by a user" time="0.009053" classname="test"/>
+	<testcase name="all core tables exist after migrations" time="0.028712" classname="test"/>
+	<testcase name="emails are unique and stored in lower case" time="0.007319" classname="test"/>
+	<testcase name="money cannot be negative (CHECK constraint)" time="0.019436" classname="test"/>
+	<testcase name="full-text search matches word stems and quoted phrases (FR-13)" time="0.033541" classname="test"/>
+	<testcase name="search never returns another user's transactions (SR-05)" time="0.006068" classname="test"/>
+	<testcase name="statement has summary, assets, active loans and FY to date; PDF is produced (FR-23)" time="0.145492" classname="test"/>
+	<testcase name="deleting an asset or loan keeps its transactions with the link cleared (FR-05, FR-08)" time="0.043999" classname="test"/>
+	<testcase name="a transaction cannot point at an asset that does not exist" time="0.003790" classname="test"/>
+	<testcase name="users: create, find by email, unique email (FR-01)" time="0.043790" classname="test"/>
+	<testcase name="health check reads the database time" time="0.008288" classname="test"/>
+	<testcase name="assets: revaluation adds history, rename does not; other users get nothing (FR-05, FR-06, SR-05)" time="0.018986" classname="test"/>
+	<testcase name="transactions: only the owner can delete (FR-12, SR-05)" time="0.007046" classname="test"/>
+	<testcase name="upload, find by tag and text, then delete (FR-17)" time="0.050988" classname="test"/>
+	<testcase name="another user can't see, download, delete or link to my things" time="0.008923" classname="test"/>
+	<testcase name="vault reports unavailable (503) when storage cannot be written (NFR-04)" time="0.002725" classname="test"/>
+	<!-- tests 54 -->
+	<!-- suites 0 -->
+	<!-- pass 54 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 12096.840797 -->
+</testsuites>
